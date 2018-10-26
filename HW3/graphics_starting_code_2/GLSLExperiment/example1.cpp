@@ -531,7 +531,7 @@ string readGrammarTest(string grammar,int iter) {
 		}
 		grammar = newGrammar;
 	}
-	cout << "grammar final: " << grammar << '\n';
+	//cout << "grammar final: " << grammar << '\n';
 
 	return grammar;
 }
