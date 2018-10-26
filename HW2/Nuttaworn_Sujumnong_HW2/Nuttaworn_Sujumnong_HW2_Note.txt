@@ -1,0 +1,25 @@
+Nuttaworn Sujumnong
+Project 2
+
+Instruction: Run the the GLSLExperiment.sln as usual. When the application is opened, the first displayed mesh should be an ant.ply.
+
+Keyboard interaction:
+
+Press 'X': The mesh should slide in x+ direction and stop sliding when the key is pressed again
+press 'x': The mesh should slide in x- direction and stop sliding when the key is pressed again
+Press 'Y': The mesh should slide in Y+ direction and stop sliding when the key is pressed again
+press 'y': The mesh should slide in y- direction and stop sliding when the key is pressed again
+Press 'Z': The mesh should slide in Z+ direction and stop sliding when the key is pressed again
+press 'z': The mesh should slide in z- direction and stop sliding when the key is pressed again
+Press 'H': The mesh should shear along y- direction. Keep pressing it and the shear will keep decreasing
+Press 'h': The mesh should shear along y+ direction. Keep pressing it and the shear will keep increasing
+Press 'W': The mesh should return to it's original position and orientation
+Press 'B': The mesh should start pulsing
+Press 'N': The next mesh from the ply files list should be drawn.
+Press 'P': The previous mesh from the ply files list should be drawn
+
+NOTE: 
+- Due to poor memory allocation method for pulse function, the program may crash if the mesh is pulsed for too long.
+- When the mesh pulsing started, pressing W will not return it to original state
+- Due to some unknown reason, if the mesh is transformed beyond curtain point, pressing W may not return it to original position
+and orientation

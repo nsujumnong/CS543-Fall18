@@ -1,0 +1,6 @@
+﻿  textfile.cpp
+  InitShader.cpp
+  example1.cpp
+  Generating Code...
+example1.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
+  GLSLExperiment.vcxproj -> C:\temp\Graphics_Starting_Code\Debug\GLSLExperiment.exe

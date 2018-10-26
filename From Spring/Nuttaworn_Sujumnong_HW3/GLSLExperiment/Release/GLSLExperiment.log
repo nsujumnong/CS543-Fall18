@@ -1,0 +1,13 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppClean.targets(76,5): warning : Access to the path 'r:\cs543 computer graphics\nuttaworn_sujumnong_hw3\release\glslexperiment.exe' is denied.
+  example1.cpp
+example1.cpp(417): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+example1.cpp(422): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+example1.cpp(649): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
+example1.cpp(783): warning C4244: 'argument': conversion from 'double' to 'const GLfloat', possible loss of data
+example1.cpp(787): warning C4244: 'argument': conversion from 'double' to 'const GLfloat', possible loss of data
+example1.cpp(792): warning C4244: 'argument': conversion from 'double' to 'const GLfloat', possible loss of data
+example1.cpp(799): warning C4244: 'argument': conversion from 'double' to 'const GLfloat', possible loss of data
+example1.cpp(803): warning C4244: 'argument': conversion from 'double' to 'const GLfloat', possible loss of data
+  InitShader.cpp
+  textfile.cpp
+LINK : fatal error LNK1104: cannot open file 'R:\CS543 Computer Graphics\Nuttaworn_Sujumnong_HW3\Release\GLSLExperiment.exe'
