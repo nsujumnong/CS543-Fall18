@@ -478,7 +478,7 @@ void porsche() {
 
 void sphere() {
 	//mvstack.push(modelMat);
-	mat4 instance = Translate(0, 0, 0)*Scale(0.2, 0.2, 0.2);
+	mat4 instance = Translate(0, 1, 0)*Scale(0.2, 0.2, 0.2);
 	glUniformMatrix4fv(modelMatrix, 1, GL_TRUE, modelMat*instance);
 	drawSphere();
 	//modelMat = mvstack.pop();
@@ -486,7 +486,7 @@ void sphere() {
 
 void cylinder() {
 	//mvstack.push(modelMat);
-	mat4 instance = Translate(0,0,0)* RotateX(90) *Scale(0.2,0.2,1);
+	mat4 instance = Translate(0,0,0)* RotateX(90) *Scale(0.1,0.1,1);
 	glUniformMatrix4fv(modelMatrix, 1, GL_TRUE, modelMat*instance);
 	drawCylinder();
 	//modelMat = mvstack.pop();
@@ -497,16 +497,16 @@ Angel::mat4 ctm = Angel::identity();
 
 string readGrammarTest(string grammar,int iter) {
 	int slen = grammar.length();
-	cout << slen << endl;
+	//cout << slen << endl;
 	string ogGrammar = grammar;
 	string newGrammar;
 	newGrammar = grammar;
-	cout << "iter: " << iter << '\n';
+	//cout << "iter: " << iter << '\n';
 	char ch;
 	//int itertest = 2;
 	for (int i = 0; i < iter-1; i++) {
 		int slenNew = newGrammar.length();
-		cout << slenNew << endl;
+		//cout << slenNew << endl;
 		//cout << "iter:" << i+1 << "  " << "grammar: " << grammar << '\n';
 		//cout << "iter:" << i+1 << "  " << "newGrammar: " << newGrammar << '\n';
 		int fCount = 0;
@@ -577,52 +577,74 @@ void readGrammarTest2(string grammar) {
 	}*/
 }
 
-void interpretGrammar(string grammarFinal) {
+void interpretGrammar(string grammarFinal, int len) {
 	int slen = grammarFinal.length();
-	cout << "string lenght: " << slen << endl;
+	//cout << "string lenght: " << slen << endl;
 	for (int i = 0; i < slen; i++)
 	{
 		char ch = grammarFinal.at(i);
-		cout << "grammar: " << ch << endl;
+		//cout << "grammar: " << ch << endl;
 		if (ch == 'F')
 		{
-			cout << "move forward" << endl;
+			//cout << "move forward" << endl;
+			mvstack.push(modelMat);
+			cylinder();
+			mvstack.push(modelMat);
+			sphere();
+			modelMat = mvstack.pop();
+			for (int i = 0; i < len-1; i++)
+			{
+				modelMat = modelMat * Translate(0, 1, 0);
+				cylinder();
+				mvstack.push(modelMat);
+				sphere();
+				modelMat = mvstack.pop();
+			}
 		}
 		else if (ch == '[')
 		{
-			cout << "push" << endl;
+			//cout << "push" << endl;
+			mvstack.push(modelMat);
 		}
 		else if (ch == ']')
 		{
-			cout << "pop" << endl;
+			//cout << "pop" << endl;
+			modelMat = mvstack.pop();
 		}
 		else if (ch == '+')
 		{
-			cout << "+x" << endl;
+			//cout << "+x" << endl;
+			modelMat = modelMat * RotateX(degx);
 		}
 		else if (ch == '-')
 		{
-			cout << "-x" << endl;
+			//cout << "-x" << endl;
+			modelMat = modelMat * RotateX(-degx);
 		}
 		else if (ch == '&')
 		{
-			cout << "+y" << endl;
+			//cout << "+y" << endl;
+			modelMat = modelMat * RotateY(degy);
 		}
 		else if (ch == '^')
 		{
-			cout << "-y" << endl;
+			//cout << "-y" << endl;
+			modelMat = modelMat * RotateY(-degy);
 		}
 		else if (ch == '\\')
 		{
-			cout << "+z" << endl;
+			//cout << "+z" << endl;
+			modelMat = modelMat * RotateZ(degz);
 		}
 		else if (ch == '/')
 		{
-			cout << "-z" << endl;
+			//cout << "-z" << endl;
+			modelMat = modelMat * RotateZ(-degz);
 		}
 		else if (ch == '|')
 		{
-			cout << "turn around" << endl;
+			//cout << "turn around" << endl;
+			modelMat = modelMat * RotateX(180);
 		}
 	}
 }
@@ -633,6 +655,7 @@ void lsys1()
 	readFile("../lsysfiles/lsys1.txt");
 	string grammar1 = grammar;
 	int iter1 = iter;
+	int len1 = len;
 	string lsys1 = readGrammarTest(grammar1, iter1);
 	ofstream out("output_grammar1.txt");
 	out << lsys1;
@@ -643,6 +666,7 @@ void lsys2()
 	readFile("../lsysfiles/lsys2.txt");
 	string grammar2 = grammar;
 	int iter2 = iter;
+	int len2 = len;
 	string lsys2 = readGrammarTest(grammar2, iter2);
 	ofstream out("output_grammar2.txt");
 	out << lsys2;
@@ -653,6 +677,7 @@ void lsys3()
 	readFile("../lsysfiles/lsys3.txt");
 	string grammar3 = grammar;
 	int iter3 = iter;
+	int len3 = len;
 	string lsys3 = readGrammarTest(grammar3, iter3);
 	ofstream out("output_grammar3.txt");
 	out << lsys3;
@@ -663,6 +688,7 @@ void lsys4()
 	readFile("../lsysfiles/lsys4.txt");
 	string grammar4 = grammar;
 	int iter4 = iter;
+	int len4 = len;
 	string lsys4 = readGrammarTest(grammar4, iter4);
 	ofstream out("output_grammar4.txt");
 	out << lsys4;
@@ -673,8 +699,8 @@ void lsys4()
 void displayScene()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);     // clear the window
-	vec4 eye = vec4(0,15,25,1.0);
-	vec4 at = vec4(0, 0, 0,1.0);
+	vec4 eye = vec4(-15,15,25,1.0);
+	vec4 at = vec4(5, 0, 0,1.0);
 	vec4 up = vec4(0,1,0,1);
 	Angel::mat4 perspectiveMat = Angel::Perspective((GLfloat)45.0, (GLfloat)width / (GLfloat)height, (GLfloat)0.1, (GLfloat) 100.0);
 	Angel::mat4 cameraMat = Angel::LookAt(eye, at, up );
@@ -714,14 +740,74 @@ void displayScene()
 	mvstack.push(modelMat);
 	porsche();
 
-	mvstack.push(modelMat);
+	/*mvstack.push(modelMat);
 	modelMat = modelMat * Translate(10, 0, 0);
+	sphere();
+	modelMat = mvstack.pop();*/
+
+	// playing around with making a tree
+	// start from translate the base to +5 x-axis
+	mvstack.push(modelMat);
+	modelMat = modelMat * Translate(5, 0, 0);
+
+	// make a tree (stack 5 cylinders and spheres at the end)
+	mvstack.push(modelMat);
+	cylinder();
+	mvstack.push(modelMat);
+	sphere();
+	modelMat = mvstack.pop();
+	for (int k = 0; k < 4; k++) {
+		mvstack.push(modelMat);
+		modelMat = modelMat * Translate(0,2,0);
+		cylinder();
+		mvstack.push(modelMat);
+		sphere();
+		modelMat = mvstack.pop();
+	}
+
+	// make one branch
+	// 1st len of branch
+	mvstack.push(modelMat);
+	modelMat = modelMat * RotateX(22.5);
+	mvstack.push(modelMat);
+	modelMat = modelMat * Translate(0, 2, 0);
+	cylinder();
+	mvstack.push(modelMat);
+	sphere();
+	modelMat = mvstack.pop();
+	// 2nd len of branch
+	mvstack.push(modelMat);
+	modelMat = modelMat * Translate(0, 2, 0);
+	cylinder();
+	mvstack.push(modelMat);
+	sphere();
+	modelMat = mvstack.pop();
+	// pop back to top
+	modelMat = mvstack.pop();
+	modelMat = mvstack.pop();
+	modelMat = mvstack.pop();
+	
+	// continue from the top of the tree
+	mvstack.push(modelMat);
+	modelMat = modelMat * Translate(0,2,0);
+	cylinder();
+	mvstack.push(modelMat);
 	sphere();
 	modelMat = mvstack.pop();
 
+	// pop matrices until to goes back to the very first stack
+	modelMat = mvstack.pop();
+	modelMat = mvstack.pop();
+	modelMat = mvstack.pop();
+	modelMat = mvstack.pop();
+	modelMat = mvstack.pop();
+	modelMat = mvstack.pop();
+	modelMat = mvstack.pop();
+
+	// spawn another car in the scene
 	mvstack.push(modelMat);
-	modelMat = modelMat * Translate(5, 0, -10);
-	cylinder();
+	modelMat = modelMat * Translate(-10,0,0) * RotateY(45);
+	porsche();
 	modelMat = mvstack.pop();
 
 	glFlush(); // force output to graphics hardware
@@ -739,6 +825,11 @@ void keyboard( unsigned char key, int x, int y )
     case 033:
         exit( EXIT_SUCCESS );
         break;
+
+	case 'r':
+		ctm = ctm * RotateY(1);
+		glutDisplayFunc(displayScene);
+		glutPostRedisplay();
     }
 }
 
@@ -773,7 +864,7 @@ int main( int argc, char **argv )
 	getSphere();
 	getCylinder();
 	// assign handlers
-    //glutDisplayFunc( displayScene );
+    glutDisplayFunc( displayScene );
     glutKeyboardFunc( keyboard );
 	// should add menus
 	// add mouse handler
