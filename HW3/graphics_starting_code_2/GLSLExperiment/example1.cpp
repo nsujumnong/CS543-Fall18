@@ -587,64 +587,64 @@ void interpretGrammar(string grammarFinal, int len) {
 		if (ch == 'F')
 		{
 			//cout << "move forward" << endl;
-			mvstack.push(modelMat);
+			/*mvstack.push(modelMat);
 			cylinder();
 			mvstack.push(modelMat);
 			sphere();
 			modelMat = mvstack.pop();
 			for (int i = 0; i < len-1; i++)
 			{
-				modelMat = modelMat * Translate(0, 1, 0);
+				modelMat = modelMat * Translate(0, 2, 0);
 				cylinder();
 				mvstack.push(modelMat);
 				sphere();
 				modelMat = mvstack.pop();
-			}
+			}*/
 		}
 		else if (ch == '[')
 		{
 			//cout << "push" << endl;
-			mvstack.push(modelMat);
+			//mvstack.push(modelMat);
 		}
 		else if (ch == ']')
 		{
 			//cout << "pop" << endl;
-			modelMat = mvstack.pop();
+			//modelMat = mvstack.pop();
 		}
 		else if (ch == '+')
 		{
 			//cout << "+x" << endl;
-			modelMat = modelMat * RotateX(degx);
+			//modelMat = modelMat * Translate(0,1,0) * RotateX(degx);
 		}
 		else if (ch == '-')
 		{
-			//cout << "-x" << endl;
-			modelMat = modelMat * RotateX(-degx);
+			//cout << "Rotate: " << -degx << endl;
+			//modelMat = modelMat * Translate(0, 1, 0) * RotateX(-degx);
 		}
 		else if (ch == '&')
 		{
 			//cout << "+y" << endl;
-			modelMat = modelMat * RotateY(degy);
+			//modelMat = modelMat * RotateY(degy);
 		}
 		else if (ch == '^')
 		{
 			//cout << "-y" << endl;
-			modelMat = modelMat * RotateY(-degy);
+			//modelMat = modelMat * RotateY(-degy);
 		}
 		else if (ch == '\\')
 		{
 			//cout << "+z" << endl;
-			modelMat = modelMat * RotateZ(degz);
+			//modelMat = modelMat * Translate(0,1,0) * RotateZ(degz);
 		}
 		else if (ch == '/')
 		{
 			//cout << "-z" << endl;
-			modelMat = modelMat * RotateZ(-degz);
+			//modelMat = modelMat * Translate(0,1,0) * RotateZ(-degz);
 		}
 		else if (ch == '|')
 		{
 			//cout << "turn around" << endl;
-			modelMat = modelMat * RotateX(180);
+			//modelMat = modelMat * RotateX(180);
 		}
 	}
 }
@@ -657,6 +657,7 @@ void lsys1()
 	int iter1 = iter;
 	int len1 = len;
 	string lsys1 = readGrammarTest(grammar1, iter1);
+	interpretGrammar(lsys1,len1);
 	ofstream out("output_grammar1.txt");
 	out << lsys1;
 	out.close();
@@ -668,6 +669,7 @@ void lsys2()
 	int iter2 = iter;
 	int len2 = len;
 	string lsys2 = readGrammarTest(grammar2, iter2);
+	interpretGrammar(lsys2, len2);
 	ofstream out("output_grammar2.txt");
 	out << lsys2;
 	out.close();
@@ -679,6 +681,7 @@ void lsys3()
 	int iter3 = iter;
 	int len3 = len;
 	string lsys3 = readGrammarTest(grammar3, iter3);
+	interpretGrammar(lsys3, len3);
 	ofstream out("output_grammar3.txt");
 	out << lsys3;
 	out.close();
@@ -690,6 +693,7 @@ void lsys4()
 	int iter4 = iter;
 	int len4 = len;
 	string lsys4 = readGrammarTest(grammar4, iter4);
+	interpretGrammar(lsys4, len4);
 	ofstream out("output_grammar4.txt");
 	out << lsys4;
 	out.close();
@@ -700,7 +704,7 @@ void displayScene()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);     // clear the window
 	vec4 eye = vec4(-15,15,25,1.0);
-	vec4 at = vec4(5, 0, 0,1.0);
+	vec4 at = vec4(5, 5, 0,1.0);
 	vec4 up = vec4(0,1,0,1);
 	Angel::mat4 perspectiveMat = Angel::Perspective((GLfloat)45.0, (GLfloat)width / (GLfloat)height, (GLfloat)0.1, (GLfloat) 100.0);
 	Angel::mat4 cameraMat = Angel::LookAt(eye, at, up );
