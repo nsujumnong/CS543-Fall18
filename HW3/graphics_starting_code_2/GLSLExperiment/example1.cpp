@@ -739,7 +739,7 @@ void displayScene()
 	// matrix stack push and pop
 	mvstack.push(modelMat);
 	porsche();
-
+	modelMat = mvstack.pop();
 	/*mvstack.push(modelMat);
 	modelMat = modelMat * Translate(10, 0, 0);
 	sphere();
@@ -755,8 +755,9 @@ void displayScene()
 	cylinder();
 	mvstack.push(modelMat);
 	sphere();
-	modelMat = mvstack.pop();
+	modelMat = mvstack.pop(); // push 2, pop 1
 	for (int k = 0; k < 4; k++) {
+		// push 8, pop 4
 		mvstack.push(modelMat);
 		modelMat = modelMat * Translate(0,2,0);
 		cylinder();
@@ -768,25 +769,40 @@ void displayScene()
 	// make one branch
 	// 1st len of branch
 	mvstack.push(modelMat);
-	modelMat = modelMat * RotateX(22.5);
+	modelMat = modelMat * Translate(0, 1,0)*RotateX(22.5);
 	mvstack.push(modelMat);
-	modelMat = modelMat * Translate(0, 2, 0);
+	modelMat = modelMat * Translate(0, 1, 0);
 	cylinder();
 	mvstack.push(modelMat);
 	sphere();
 	modelMat = mvstack.pop();
+	// try adding long branch to the branch
+	for (int k = 0; k < 4; k++) {
+		mvstack.push(modelMat);
+		modelMat = modelMat * Translate(0,2,0);
+		cylinder();
+		mvstack.push(modelMat);
+		sphere();
+		modelMat = mvstack.pop();
+	}
+
 	// 2nd len of branch
+	/*mvstack.push(modelMat);
+	modelMat = modelMat * Translate(0,1,0)*RotateX(22.5);
 	mvstack.push(modelMat);
-	modelMat = modelMat * Translate(0, 2, 0);
+	modelMat = modelMat * Translate(0, 1, 0);
 	cylinder();
 	mvstack.push(modelMat);
 	sphere();
-	modelMat = mvstack.pop();
+	modelMat = mvstack.pop();*/
 	// pop back to top
 	modelMat = mvstack.pop();
+	modelMat = mvstack.pop(); // enough popping for 1 len brach to go back to the top of tree
 	modelMat = mvstack.pop();
+	modelMat = mvstack.pop(); // enough popping for 2 len branch to go back to the top of tree
 	modelMat = mvstack.pop();
-	
+	modelMat = mvstack.pop(); // if replace 2nd len branch with long branch, this is enough popping 
+
 	// continue from the top of the tree
 	mvstack.push(modelMat);
 	modelMat = modelMat * Translate(0,2,0);
@@ -802,7 +818,7 @@ void displayScene()
 	modelMat = mvstack.pop();
 	modelMat = mvstack.pop();
 	modelMat = mvstack.pop();
-	modelMat = mvstack.pop();
+	modelMat = mvstack.pop(); // pop 7 times to go back to the bottom of the stack
 
 	// spawn another car in the scene
 	mvstack.push(modelMat);
