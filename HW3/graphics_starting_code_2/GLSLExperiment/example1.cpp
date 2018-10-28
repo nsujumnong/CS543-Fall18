@@ -15,7 +15,7 @@ int height = 0;
 
 class matrix_stack {
 	public:
-		static const int MAX = 50;
+		static const int MAX = 100000;
 		matrix_stack() { index = 0; }
 		void push(const mat4& matrix);
 		mat4 pop();
@@ -469,11 +469,11 @@ void drawCylinder() {
 }
 // function calling each ply with push and pop matrix stack
 void porsche() {
-	mvstack.push(modelMat);
+	//mvstack.push(modelMat);
 	mat4 instance = Translate(0, 0, 0)*Scale(0.5, 0.5, 0.5);
 	glUniformMatrix4fv(modelMatrix, 1, GL_TRUE, modelMat*instance);
 	drawPorsche();
-	modelMat = mvstack.pop();
+	//modelMat = mvstack.pop();
 }
 
 void sphere() {
@@ -577,8 +577,12 @@ void readGrammarTest2(string grammar) {
 	}*/
 }
 
+int pushCount;
+int popCount;
 void interpretGrammar(string grammarFinal, int len) {
 	int slen = grammarFinal.length();
+	pushCount = 0;
+	popCount = 0;
 	//cout << "string lenght: " << slen << endl;
 	for (int i = 0; i < slen; i++)
 	{
@@ -587,115 +591,147 @@ void interpretGrammar(string grammarFinal, int len) {
 		if (ch == 'F')
 		{
 			//cout << "move forward" << endl;
-			/*mvstack.push(modelMat);
+			mvstack.push(modelMat);
+			pushCount++;
 			cylinder();
 			mvstack.push(modelMat);
+			pushCount++;
 			sphere();
 			modelMat = mvstack.pop();
-			for (int i = 0; i < len-1; i++)
+			popCount++;
+			for (int j = 0; j < len-1; j++)
 			{
+				cout << "build the branch number: " << i << '\n';
 				modelMat = modelMat * Translate(0, 2, 0);
 				cylinder();
 				mvstack.push(modelMat);
+				pushCount++;
 				sphere();
 				modelMat = mvstack.pop();
-			}*/
+				popCount++;
+			}
 		}
 		else if (ch == '[')
 		{
 			//cout << "push" << endl;
-			//mvstack.push(modelMat);
+			mvstack.push(modelMat);
+			pushCount++;
 		}
 		else if (ch == ']')
 		{
 			//cout << "pop" << endl;
-			//modelMat = mvstack.pop();
+			modelMat = mvstack.pop();
+			popCount++;
 		}
 		else if (ch == '+')
 		{
 			//cout << "+x" << endl;
-			//modelMat = modelMat * Translate(0,1,0) * RotateX(degx);
+			modelMat = modelMat * Translate(0,1,0) * RotateX(degx);
 		}
 		else if (ch == '-')
 		{
 			//cout << "Rotate: " << -degx << endl;
-			//modelMat = modelMat * Translate(0, 1, 0) * RotateX(-degx);
+			modelMat = modelMat * Translate(0, 1, 0) * RotateX(-degx);
 		}
 		else if (ch == '&')
 		{
 			//cout << "+y" << endl;
-			//modelMat = modelMat * RotateY(degy);
+			modelMat = modelMat * RotateY(degy);
 		}
 		else if (ch == '^')
 		{
 			//cout << "-y" << endl;
-			//modelMat = modelMat * RotateY(-degy);
+			modelMat = modelMat * RotateY(-degy);
 		}
 		else if (ch == '\\')
 		{
 			//cout << "+z" << endl;
-			//modelMat = modelMat * Translate(0,1,0) * RotateZ(degz);
+			modelMat = modelMat * Translate(0,1,0) * RotateZ(degz);
 		}
 		else if (ch == '/')
 		{
 			//cout << "-z" << endl;
-			//modelMat = modelMat * Translate(0,1,0) * RotateZ(-degz);
+			modelMat = modelMat * Translate(0,1,0) * RotateZ(-degz);
 		}
 		else if (ch == '|')
 		{
 			//cout << "turn around" << endl;
-			//modelMat = modelMat * RotateX(180);
+			modelMat = modelMat * RotateX(180);
 		}
 	}
+
+	if (pushCount > popCount)
+	{
+		int morePop = pushCount - popCount;
+		for (int m = 0; m < morePop; m++)
+		{
+			modelMat = mvstack.pop();
+			popCount++;
+		}
+	}
+	
+	cout << "push inside interpret: " << pushCount << '\n';
+	cout << "pop inside interpret: " << popCount << '\n';
 }
 
 //------------------------------------------------------------------------------
+string finallsys1;
+int len1;
 void lsys1()
 {
 	readFile("../lsysfiles/lsys1.txt");
 	string grammar1 = grammar;
 	int iter1 = iter;
-	int len1 = len;
-	string lsys1 = readGrammarTest(grammar1, iter1);
-	interpretGrammar(lsys1,len1);
+	len1 = len;
+	finallsys1 = readGrammarTest(grammar1, iter1);
+	//interpretGrammar(lsys1,len1);
 	ofstream out("output_grammar1.txt");
-	out << lsys1;
+	out << finallsys1;
 	out.close();
 }
+
+string finallsys2;
+int len2;
 void lsys2()
 {
 	readFile("../lsysfiles/lsys2.txt");
 	string grammar2 = grammar;
 	int iter2 = iter;
-	int len2 = len;
-	string lsys2 = readGrammarTest(grammar2, iter2);
-	interpretGrammar(lsys2, len2);
+	len2 = len;
+	finallsys2 = readGrammarTest(grammar2, iter2);
+	//interpretGrammar(lsys2, len2);
 	ofstream out("output_grammar2.txt");
-	out << lsys2;
+	out << finallsys2;
 	out.close();
 }
+
+string finallsys3;
+int len3;
 void lsys3()
 {
 	readFile("../lsysfiles/lsys3.txt");
 	string grammar3 = grammar;
 	int iter3 = iter;
-	int len3 = len;
-	string lsys3 = readGrammarTest(grammar3, iter3);
-	interpretGrammar(lsys3, len3);
+	len3 = len;
+	finallsys3 = readGrammarTest(grammar3, iter3);
+	//interpretGrammar(lsys3, len3);
 	ofstream out("output_grammar3.txt");
-	out << lsys3;
+	out << finallsys3;
 	out.close();
 }
+
+string finallsys4;
+int len4;
 void lsys4()
 {
 	readFile("../lsysfiles/lsys4.txt");
 	string grammar4 = grammar;
 	int iter4 = iter;
-	int len4 = len;
-	string lsys4 = readGrammarTest(grammar4, iter4);
-	interpretGrammar(lsys4, len4);
+	len4 = len;
+	finallsys4 = readGrammarTest(grammar4, iter4);
+	//interpretGrammar(lsys4, len4);
 	ofstream out("output_grammar4.txt");
-	out << lsys4;
+	out << finallsys4;
 	out.close();
 }
 
@@ -740,6 +776,9 @@ void displayScene()
 	GLuint viewMatrix = glGetUniformLocationARB(program, "projection_matrix");
 	glUniformMatrix4fv(viewMatrix, 1, GL_FALSE, viewMatrixf);
 
+	pushCount = 0;
+	popCount = 0;
+
 	// matrix stack push and pop
 	mvstack.push(modelMat);
 	porsche();
@@ -752,44 +791,63 @@ void displayScene()
 	// playing around with making a tree
 	// start from translate the base to +5 x-axis
 	mvstack.push(modelMat);
+	pushCount++;
 	modelMat = modelMat * Translate(5, 0, 0);
 
 	// make a tree (stack 5 cylinders and spheres at the end)
+	// This is equivalent to F
 	mvstack.push(modelMat);
+	pushCount++;
 	cylinder();
 	mvstack.push(modelMat);
+	pushCount++;
 	sphere();
 	modelMat = mvstack.pop(); // push 2, pop 1
+	popCount++;
 	for (int k = 0; k < 4; k++) {
 		// push 8, pop 4
 		mvstack.push(modelMat);
+		pushCount++;
 		modelMat = modelMat * Translate(0,2,0);
 		cylinder();
 		mvstack.push(modelMat);
+		pushCount++;
 		sphere();
 		modelMat = mvstack.pop();
+		popCount++;
 	}
 
 	// make one branch
 	// 1st len of branch
-	mvstack.push(modelMat);
+	mvstack.push(modelMat);	// [
+	pushCount++;
+	// +
 	modelMat = modelMat * Translate(0, 1,0)*RotateX(22.5);
+	// F
 	mvstack.push(modelMat);
+	pushCount++;
 	modelMat = modelMat * Translate(0, 1, 0);
 	cylinder();
 	mvstack.push(modelMat);
+	pushCount++;
 	sphere();
 	modelMat = mvstack.pop();
+	popCount++;
 	// try adding long branch to the branch
 	for (int k = 0; k < 4; k++) {
 		mvstack.push(modelMat);
+		pushCount++;
 		modelMat = modelMat * Translate(0,2,0);
 		cylinder();
 		mvstack.push(modelMat);
+		pushCount++;
 		sphere();
 		modelMat = mvstack.pop();
+		popCount++;
 	}
-
+	
+	//cout << "pushCount: " << pushCount << '\n';
+	//cout << "popCount: " << popCount << '\n';
 	// 2nd len of branch
 	/*mvstack.push(modelMat);
 	modelMat = modelMat * Translate(0,1,0)*RotateX(22.5);
@@ -801,35 +859,71 @@ void displayScene()
 	modelMat = mvstack.pop();*/
 	// pop back to top
 	modelMat = mvstack.pop();
+	popCount++;
 	modelMat = mvstack.pop(); // enough popping for 1 len brach to go back to the top of tree
+	popCount++;
 	modelMat = mvstack.pop();
+	popCount++;
 	modelMat = mvstack.pop(); // enough popping for 2 len branch to go back to the top of tree
+	popCount++;
 	modelMat = mvstack.pop();
+	popCount++;
 	modelMat = mvstack.pop(); // if replace 2nd len branch with long branch, this is enough popping 
+	popCount++;
 
 	// continue from the top of the tree
 	mvstack.push(modelMat);
+	pushCount++;
 	modelMat = modelMat * Translate(0,2,0);
 	cylinder();
 	mvstack.push(modelMat);
+	pushCount++;
 	sphere();
 	modelMat = mvstack.pop();
+	popCount++;
 
 	// pop matrices until to goes back to the very first stack
 	modelMat = mvstack.pop();
+	popCount++;
 	modelMat = mvstack.pop();
+	popCount++;
 	modelMat = mvstack.pop();
+	popCount++;
 	modelMat = mvstack.pop();
+	popCount++;
 	modelMat = mvstack.pop();
+	popCount++;
 	modelMat = mvstack.pop();
+	popCount++;
 	modelMat = mvstack.pop(); // pop 7 times to go back to the bottom of the stack
+	popCount++;
+
+	// test the grammar reading algorithm
+	mvstack.push(modelMat);
+	modelMat = modelMat * Translate(0, 0, -10);
+
+	interpretGrammar(finallsys1, len1);
+	modelMat = mvstack.pop();
 
 	// spawn another car in the scene
 	mvstack.push(modelMat);
+	pushCount++;
 	modelMat = modelMat * Translate(-10,0,0) * RotateY(45);
 	porsche();
 	modelMat = mvstack.pop();
+	popCount++;
 
+	if (pushCount > popCount)
+	{
+		int numToPop = pushCount - popCount;
+		for (int p = 0; p < numToPop; p++)
+		{
+			modelMat = mvstack.pop();
+		}
+	}
+
+	cout << "pushCount: " << pushCount << '\n';
+	cout << "popCount: " << popCount << '\n';
 	glFlush(); // force output to graphics hardware
 
 	glutSwapBuffers();
@@ -883,6 +977,7 @@ int main( int argc, char **argv )
 	getPorsche();
 	getSphere();
 	getCylinder();
+	//interpretGrammar(finallsys1, len1);
 	// assign handlers
     glutDisplayFunc( displayScene );
     glutKeyboardFunc( keyboard );
