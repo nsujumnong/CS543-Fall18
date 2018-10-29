@@ -584,6 +584,7 @@ void interpretGrammar(string grammarFinal, int len) {
 	pushCount = 0;
 	popCount = 0;
 	//cout << "string lenght: " << slen << endl;
+	cout << "len: " << len << '\n';
 	for (int i = 0; i < slen; i++)
 	{
 		char ch = grammarFinal.at(i);
@@ -591,14 +592,30 @@ void interpretGrammar(string grammarFinal, int len) {
 		if (ch == 'F')
 		{
 			//cout << "move forward" << endl;
-			mvstack.push(modelMat);
-			pushCount++;
-			cylinder();
-			mvstack.push(modelMat);
-			pushCount++;
-			sphere();
-			modelMat = mvstack.pop();
-			popCount++;
+			if (i == 0)
+			{
+				mvstack.push(modelMat);
+				pushCount++;
+				cylinder();
+				mvstack.push(modelMat);
+				pushCount++;
+				sphere();
+				modelMat = mvstack.pop();
+				popCount++;
+			}
+			else
+			{
+				//mvstack.push(modelMat);
+				//pushCount++;
+				modelMat = modelMat * Translate(0, 1, 0);
+				cylinder();
+				mvstack.push(modelMat);
+				pushCount++;
+				sphere();
+				modelMat = mvstack.pop();
+				popCount++;
+			}
+
 			for (int j = 0; j < len-1; j++)
 			{
 				cout << "build the branch number: " << i << '\n';
@@ -682,6 +699,7 @@ void lsys1()
 	readFile("../lsysfiles/lsys1.txt");
 	string grammar1 = grammar;
 	int iter1 = iter;
+	cout << "check len: " << len << '\n';
 	len1 = len;
 	finallsys1 = readGrammarTest(grammar1, iter1);
 	//interpretGrammar(lsys1,len1);
@@ -903,6 +921,27 @@ void displayScene()
 	modelMat = modelMat * Translate(0, 0, -10);
 
 	interpretGrammar(finallsys1, len1);
+	modelMat = mvstack.pop();
+
+	// test the 2nd grammar
+	mvstack.push(modelMat);
+	modelMat = modelMat * Translate(10, 0, -10);
+
+	interpretGrammar(finallsys2, len2);
+	modelMat = mvstack.pop();
+
+	// test the 3rd grammar
+	mvstack.push(modelMat);
+	modelMat = modelMat * Translate(10, 0, 0);
+
+	interpretGrammar(finallsys3, len3);
+	modelMat = mvstack.pop();
+
+	// test the 4th grammar
+	mvstack.push(modelMat);
+	modelMat = modelMat * Translate(0, 0, 5);
+
+	interpretGrammar(finallsys4, len4);
 	modelMat = mvstack.pop();
 
 	// spawn another car in the scene
