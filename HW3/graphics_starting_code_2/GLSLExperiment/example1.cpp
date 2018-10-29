@@ -389,7 +389,7 @@ void polyBuffer(void)
 		BUFFER_OFFSET(sizeof(vec4)*numPolyVert));
 
 	// sets the default color to clear screen
-	glClearColor(1.0, 1.0, 1.0, 1.0); // white background
+	glClearColor(0.5, 0.5, 0.5, 1.0); // white background
 }
 
 // Define the transformation matrices
@@ -757,8 +757,8 @@ void lsys4()
 void displayScene()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);     // clear the window
-	vec4 eye = vec4(-15,15,25,1.0);
-	vec4 at = vec4(5, 5, 0,1.0);
+	vec4 eye = vec4(-15,15,40,1.0);
+	vec4 at = vec4(0, 0, -10,1.0);
 	vec4 up = vec4(0,1,0,1);
 	Angel::mat4 perspectiveMat = Angel::Perspective((GLfloat)45.0, (GLfloat)width / (GLfloat)height, (GLfloat)0.1, (GLfloat) 100.0);
 	Angel::mat4 cameraMat = Angel::LookAt(eye, at, up );
@@ -918,28 +918,28 @@ void displayScene()
 
 	// test the grammar reading algorithm
 	mvstack.push(modelMat);
-	modelMat = modelMat * Translate(0, 0, -10);
+	modelMat = modelMat * Translate(0, 0, -10) * RotateY(90);
 
 	interpretGrammar(finallsys1, len1);
 	modelMat = mvstack.pop();
 
 	// test the 2nd grammar
 	mvstack.push(modelMat);
-	modelMat = modelMat * Translate(10, 0, -10);
+	modelMat = modelMat * Translate(10, 0, -10) * RotateY(90);
 
 	interpretGrammar(finallsys2, len2);
 	modelMat = mvstack.pop();
 
 	// test the 3rd grammar
 	mvstack.push(modelMat);
-	modelMat = modelMat * Translate(10, 0, 0);
+	modelMat = modelMat * Translate(-10, 0, -10) * RotateY(90);
 
 	interpretGrammar(finallsys3, len3);
 	modelMat = mvstack.pop();
 
 	// test the 4th grammar
 	mvstack.push(modelMat);
-	modelMat = modelMat * Translate(0, 0, 5);
+	modelMat = modelMat * Translate(10, 0, 5);
 
 	interpretGrammar(finallsys4, len4);
 	modelMat = mvstack.pop();
