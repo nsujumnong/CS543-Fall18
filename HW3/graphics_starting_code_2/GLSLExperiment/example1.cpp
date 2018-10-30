@@ -408,6 +408,34 @@ Angel::mat4 rotNZ = Angel::RotateZ(-degz);
 
 
 //----------------------------------------------------------------------------
+// This is where the plane is defined
+point4 groundPoints[6];
+point4 groundVert[4] = {
+	point4(-20,-1,-20,1.0),
+	point4(20,-1,-20,1.0),
+	point4(20,-1,20,1.0),
+	point4(-20,-1,20,1.0)
+};
+
+void quadGround()
+{
+	groundPoints[0] = groundVert[0];
+	groundPoints[1] = groundVert[1];
+	groundPoints[2] = groundVert[2];
+	groundPoints[3] = groundVert[0];
+	groundPoints[4] = groundVert[2];
+	groundPoints[5] = groundVert[3];
+}
+
+void drawGround()
+{
+	glBufferData(GL_ARRAY_BUFFER, sizeof(groundPoints), groundPoints, GL_STATIC_DRAW);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glEnable(GL_DEPTH_TEST);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+	glDisable(GL_DEPTH_TEST);
+}
+
 // This section draw various meshes to be added to the scene
 Angel::mat4 modelMat;
 matrix_stack mvstack;
@@ -584,7 +612,7 @@ void interpretGrammar(string grammarFinal, int len) {
 	pushCount = 0;
 	popCount = 0;
 	//cout << "string lenght: " << slen << endl;
-	cout << "len: " << len << '\n';
+	//cout << "len: " << len << '\n';
 	for (int i = 0; i < slen; i++)
 	{
 		char ch = grammarFinal.at(i);
@@ -618,7 +646,7 @@ void interpretGrammar(string grammarFinal, int len) {
 
 			for (int j = 0; j < len-1; j++)
 			{
-				cout << "build the branch number: " << i << '\n';
+				//cout << "build the branch number: " << i << '\n';
 				modelMat = modelMat * Translate(0, 2, 0);
 				cylinder();
 				mvstack.push(modelMat);
@@ -636,7 +664,6 @@ void interpretGrammar(string grammarFinal, int len) {
 		}
 		else if (ch == ']')
 		{
-			//cout << "pop" << endl;
 			modelMat = mvstack.pop();
 			popCount++;
 		}
@@ -673,7 +700,7 @@ void interpretGrammar(string grammarFinal, int len) {
 		else if (ch == '|')
 		{
 			//cout << "turn around" << endl;
-			modelMat = modelMat * RotateX(180);
+			modelMat = modelMat * RotateX(180) * RotateZ(180);
 		}
 	}
 
@@ -687,8 +714,8 @@ void interpretGrammar(string grammarFinal, int len) {
 		}
 	}
 	
-	cout << "push inside interpret: " << pushCount << '\n';
-	cout << "pop inside interpret: " << popCount << '\n';
+	//cout << "push inside interpret: " << pushCount << '\n';
+	//cout << "pop inside interpret: " << popCount << '\n';
 }
 
 //------------------------------------------------------------------------------
@@ -753,6 +780,45 @@ void lsys4()
 	out.close();
 }
 
+string finallsys5;
+int len5;
+void lsys5()
+{
+	readFile("../lsysfiles/lsys5.txt");
+	string grammar5 = grammar;
+	int iter5 = iter;
+	len5 = len;
+	finallsys5 = readGrammarTest(grammar5, iter5);
+	//interpretGrammar(lsys4, len4);
+	ofstream out("output_grammar5.txt");
+	out << finallsys5;
+	out.close();
+}
+
+// this section initialize the number of tree will be drawn
+int tree1Count = 0;
+int tree2Count = 0;
+int tree3Count = 0;
+int tree4Count = 0;
+int tree5Count = 0;
+
+// define randomly gerenrated location for trees
+float posx1;
+float posz1;
+float rotx1;
+float posx2;
+float posz2;
+float rotx2;
+float posx3;
+float posz3;
+float rotx3;
+float posx4;
+float posz4;
+float rotx4;
+float posx5;
+float posz5;
+float rotx5;
+GLboolean isF = GL_FALSE;
 // This section display the scene
 void displayScene()
 {
@@ -797,160 +863,207 @@ void displayScene()
 	pushCount = 0;
 	popCount = 0;
 
+	drawGround();
 	// matrix stack push and pop
-	mvstack.push(modelMat);
-	porsche();
-	modelMat = mvstack.pop();
 	/*mvstack.push(modelMat);
-	modelMat = modelMat * Translate(10, 0, 0);
-	sphere();
+	porsche();
 	modelMat = mvstack.pop();*/
 
 	// playing around with making a tree
 	// start from translate the base to +5 x-axis
-	mvstack.push(modelMat);
+	/*mvstack.push(modelMat);
 	pushCount++;
-	modelMat = modelMat * Translate(5, 0, 0);
+	modelMat = modelMat * Translate(5, 0, 0);*/
 
 	// make a tree (stack 5 cylinders and spheres at the end)
 	// This is equivalent to F
-	mvstack.push(modelMat);
-	pushCount++;
-	cylinder();
-	mvstack.push(modelMat);
-	pushCount++;
-	sphere();
-	modelMat = mvstack.pop(); // push 2, pop 1
-	popCount++;
-	for (int k = 0; k < 4; k++) {
-		// push 8, pop 4
-		mvstack.push(modelMat);
-		pushCount++;
-		modelMat = modelMat * Translate(0,2,0);
-		cylinder();
-		mvstack.push(modelMat);
-		pushCount++;
-		sphere();
-		modelMat = mvstack.pop();
-		popCount++;
+	//mvstack.push(modelMat);
+	//pushCount++;
+	//cylinder();
+	//mvstack.push(modelMat);
+	//pushCount++;
+	//sphere();
+	//modelMat = mvstack.pop(); // push 2, pop 1
+	//popCount++;
+	//for (int k = 0; k < 4; k++) {
+	//	// push 8, pop 4
+	//	mvstack.push(modelMat);
+	//	pushCount++;
+	//	modelMat = modelMat * Translate(0,2,0);
+	//	cylinder();
+	//	mvstack.push(modelMat);
+	//	pushCount++;
+	//	sphere();
+	//	modelMat = mvstack.pop();
+	//	popCount++;
+	//}
+
+	//// make one branch
+	//// 1st len of branch
+	//mvstack.push(modelMat);	// [
+	//pushCount++;
+	//// +
+	//modelMat = modelMat * Translate(0, 1,0)*RotateX(22.5);
+	//// F
+	//mvstack.push(modelMat);
+	//pushCount++;
+	//modelMat = modelMat * Translate(0, 1, 0);
+	//cylinder();
+	//mvstack.push(modelMat);
+	//pushCount++;
+	//sphere();
+	//modelMat = mvstack.pop();
+	//popCount++;
+	//// try adding long branch to the branch
+	//for (int k = 0; k < 4; k++) {
+	//	mvstack.push(modelMat);
+	//	pushCount++;
+	//	modelMat = modelMat * Translate(0,2,0);
+	//	cylinder();
+	//	mvstack.push(modelMat);
+	//	pushCount++;
+	//	sphere();
+	//	modelMat = mvstack.pop();
+	//	popCount++;
+	//}
+	//
+	////cout << "pushCount: " << pushCount << '\n';
+	////cout << "popCount: " << popCount << '\n';
+	//// 2nd len of branch
+	///*mvstack.push(modelMat);
+	//modelMat = modelMat * Translate(0,1,0)*RotateX(22.5);
+	//mvstack.push(modelMat);
+	//modelMat = modelMat * Translate(0, 1, 0);
+	//cylinder();
+	//mvstack.push(modelMat);
+	//sphere();
+	//modelMat = mvstack.pop();*/
+	//// pop back to top
+	//modelMat = mvstack.pop();
+	//popCount++;
+	//modelMat = mvstack.pop(); // enough popping for 1 len brach to go back to the top of tree
+	//popCount++;
+	//modelMat = mvstack.pop();
+	//popCount++;
+	//modelMat = mvstack.pop(); // enough popping for 2 len branch to go back to the top of tree
+	//popCount++;
+	//modelMat = mvstack.pop();
+	//popCount++;
+	//modelMat = mvstack.pop(); // if replace 2nd len branch with long branch, this is enough popping 
+	//popCount++;
+
+	//// continue from the top of the tree
+	//mvstack.push(modelMat);
+	//pushCount++;
+	//modelMat = modelMat * Translate(0,2,0);
+	//cylinder();
+	//mvstack.push(modelMat);
+	//pushCount++;
+	//sphere();
+	//modelMat = mvstack.pop();
+	//popCount++;
+
+	//// pop matrices until to goes back to the very first stack
+	//modelMat = mvstack.pop();
+	//popCount++;
+	//modelMat = mvstack.pop();
+	//popCount++;
+	//modelMat = mvstack.pop();
+	//popCount++;
+	//modelMat = mvstack.pop();
+	//popCount++;
+	//modelMat = mvstack.pop();
+	//popCount++;
+	//modelMat = mvstack.pop();
+	//popCount++;
+	//modelMat = mvstack.pop(); // pop 7 times to go back to the bottom of the stack
+	//popCount++;
+
+	// test the grammar reading algorithm
+	if (tree1Count != 0)
+	{
+		for (int i = 0; i < tree1Count; i++)
+		{
+			mvstack.push(modelMat);
+			//modelMat = modelMat * Translate(posx1, 0, posz1) * RotateY(rotx1);
+			modelMat = modelMat * Translate(rand()%20, 0, rand()%20) * RotateY(rand()%90);
+			interpretGrammar(finallsys1, len1);
+			modelMat = mvstack.pop();
+		}
+	}
+	
+	// test the 2nd grammar
+	if (tree2Count != 0)
+	{
+		for (int i = 0; i < tree2Count; i++)
+		{
+			mvstack.push(modelMat);
+			modelMat = modelMat * Translate(rand() % 20 - 20, 0, rand() % 20 - 20) * RotateY(rand() % 90);
+
+			interpretGrammar(finallsys2, len2);
+			modelMat = mvstack.pop();
+		}
+	}
+	
+	// test the 3rd grammar
+	if (tree3Count != 0)
+	{
+		for (int i = 0; i < tree3Count; i++)
+		{
+			mvstack.push(modelMat);
+			modelMat = modelMat * Translate(rand() % 20 - 20, 0, rand() % 20 - 20) * RotateY(rand() % 90);
+
+			interpretGrammar(finallsys3, len3);
+			modelMat = mvstack.pop();
+		}
 	}
 
-	// make one branch
-	// 1st len of branch
-	mvstack.push(modelMat);	// [
-	pushCount++;
-	// +
-	modelMat = modelMat * Translate(0, 1,0)*RotateX(22.5);
-	// F
-	mvstack.push(modelMat);
-	pushCount++;
-	modelMat = modelMat * Translate(0, 1, 0);
-	cylinder();
-	mvstack.push(modelMat);
-	pushCount++;
-	sphere();
-	modelMat = mvstack.pop();
-	popCount++;
-	// try adding long branch to the branch
-	for (int k = 0; k < 4; k++) {
+	// test the 4th grammar
+	if (tree4Count != 0)
+	{
+		for (int i = 0; i < tree4Count; i++)
+		{
+			mvstack.push(modelMat);
+			modelMat = modelMat * Translate(rand() % 20 - 20, 0, rand() % 20 - 20) * RotateY(rand() % 90);
+
+			interpretGrammar(finallsys4, len4);
+			modelMat = mvstack.pop();
+		}
+	}
+
+	// test the 5th grammar (my grammar)
+	if (tree5Count != 0)
+	{
+		for (int i = 0; i < tree5Count; i++)
+		{
+			mvstack.push(modelMat);
+			modelMat = modelMat * Translate(rand() % 20 - 20, 0, rand() % 20 - 20) * RotateY(rand() % 90);
+
+			interpretGrammar(finallsys5, len5);
+			modelMat = mvstack.pop();
+		}
+	}
+
+	// spawn another car in the scene
+	if (isF == GL_TRUE)
+	{
+		//drawGround();
+
 		mvstack.push(modelMat);
 		pushCount++;
-		modelMat = modelMat * Translate(0,2,0);
-		cylinder();
+		modelMat = modelMat * Translate(0, 0, 0) * RotateY(0);
+		porsche();
+		modelMat = mvstack.pop();
+		popCount++;
+
 		mvstack.push(modelMat);
 		pushCount++;
-		sphere();
+		modelMat = modelMat * Translate(-10, 0, 0) * RotateY(45);
+		porsche();
 		modelMat = mvstack.pop();
 		popCount++;
 	}
 	
-	//cout << "pushCount: " << pushCount << '\n';
-	//cout << "popCount: " << popCount << '\n';
-	// 2nd len of branch
-	/*mvstack.push(modelMat);
-	modelMat = modelMat * Translate(0,1,0)*RotateX(22.5);
-	mvstack.push(modelMat);
-	modelMat = modelMat * Translate(0, 1, 0);
-	cylinder();
-	mvstack.push(modelMat);
-	sphere();
-	modelMat = mvstack.pop();*/
-	// pop back to top
-	modelMat = mvstack.pop();
-	popCount++;
-	modelMat = mvstack.pop(); // enough popping for 1 len brach to go back to the top of tree
-	popCount++;
-	modelMat = mvstack.pop();
-	popCount++;
-	modelMat = mvstack.pop(); // enough popping for 2 len branch to go back to the top of tree
-	popCount++;
-	modelMat = mvstack.pop();
-	popCount++;
-	modelMat = mvstack.pop(); // if replace 2nd len branch with long branch, this is enough popping 
-	popCount++;
-
-	// continue from the top of the tree
-	mvstack.push(modelMat);
-	pushCount++;
-	modelMat = modelMat * Translate(0,2,0);
-	cylinder();
-	mvstack.push(modelMat);
-	pushCount++;
-	sphere();
-	modelMat = mvstack.pop();
-	popCount++;
-
-	// pop matrices until to goes back to the very first stack
-	modelMat = mvstack.pop();
-	popCount++;
-	modelMat = mvstack.pop();
-	popCount++;
-	modelMat = mvstack.pop();
-	popCount++;
-	modelMat = mvstack.pop();
-	popCount++;
-	modelMat = mvstack.pop();
-	popCount++;
-	modelMat = mvstack.pop();
-	popCount++;
-	modelMat = mvstack.pop(); // pop 7 times to go back to the bottom of the stack
-	popCount++;
-
-	// test the grammar reading algorithm
-	mvstack.push(modelMat);
-	modelMat = modelMat * Translate(0, 0, -10) * RotateY(90);
-
-	interpretGrammar(finallsys1, len1);
-	modelMat = mvstack.pop();
-
-	// test the 2nd grammar
-	mvstack.push(modelMat);
-	modelMat = modelMat * Translate(10, 0, -10) * RotateY(90);
-
-	interpretGrammar(finallsys2, len2);
-	modelMat = mvstack.pop();
-
-	// test the 3rd grammar
-	mvstack.push(modelMat);
-	modelMat = modelMat * Translate(-10, 0, -10) * RotateY(90);
-
-	interpretGrammar(finallsys3, len3);
-	modelMat = mvstack.pop();
-
-	// test the 4th grammar
-	mvstack.push(modelMat);
-	modelMat = modelMat * Translate(10, 0, 5);
-
-	interpretGrammar(finallsys4, len4);
-	modelMat = mvstack.pop();
-
-	// spawn another car in the scene
-	mvstack.push(modelMat);
-	pushCount++;
-	modelMat = modelMat * Translate(-10,0,0) * RotateY(45);
-	porsche();
-	modelMat = mvstack.pop();
-	popCount++;
 
 	if (pushCount > popCount)
 	{
@@ -961,8 +1074,8 @@ void displayScene()
 		}
 	}
 
-	cout << "pushCount: " << pushCount << '\n';
-	cout << "popCount: " << popCount << '\n';
+	//cout << "pushCount: " << pushCount << '\n';
+	//cout << "popCount: " << popCount << '\n';
 	glFlush(); // force output to graphics hardware
 
 	glutSwapBuffers();
@@ -979,10 +1092,61 @@ void keyboard( unsigned char key, int x, int y )
         exit( EXIT_SUCCESS );
         break;
 
-	case 'r':
-		ctm = ctm * RotateY(1);
+	case 'a':
+		tree1Count++;
+		posx1 = rand() % 20;
+		posz1 = rand() % 20;
+		rotx1 = rand() % 90;
+		//ctm = ctm * RotateY(1);
 		glutDisplayFunc(displayScene);
 		glutPostRedisplay();
+		break;
+
+	case 'b':
+		tree2Count++;
+		posx2 = rand() % 20;
+		posz2 = rand() % 20;
+		rotx2 = rand() % 90;
+		//ctm = ctm * RotateY(1);
+		glutDisplayFunc(displayScene);
+		glutPostRedisplay();
+		break;
+
+	case 'c':
+		tree3Count++;
+		posx3 = rand() % 20;
+		posz3 = rand() % 20;
+		rotx3 = rand() % 90;
+		//ctm = ctm * RotateY(1);
+		glutDisplayFunc(displayScene);
+		glutPostRedisplay();
+		break;
+
+	case 'd':
+		tree4Count++;
+		posx4 = rand() % 20;
+		posz4 = rand() % 20;
+		rotx4 = rand() % 90;
+		//ctm = ctm * RotateY(1);
+		glutDisplayFunc(displayScene);
+		glutPostRedisplay();
+		break;
+
+	case 'e':
+		tree5Count++;
+		posx5 = rand() % 20;
+		posz5 = rand() % 20;
+		rotx5 = rand() % 90;
+		//ctm = ctm * RotateY(1);
+		glutDisplayFunc(displayScene);
+		glutPostRedisplay();
+		break;
+
+	case 'f':
+		isF = !isF;
+		glutDisplayFunc(displayScene);
+		glutPostRedisplay();
+		break;
     }
 }
 
@@ -1013,9 +1177,11 @@ int main( int argc, char **argv )
 	lsys2();
 	lsys3();
 	lsys4();
+	lsys5();
 	getPorsche();
 	getSphere();
 	getCylinder();
+	quadGround();
 	//interpretGrammar(finallsys1, len1);
 	// assign handlers
     glutDisplayFunc( displayScene );
