@@ -1,0 +1,8 @@
+﻿  example1.cpp
+example1.cpp(193): warning C4305: '+=': truncation from 'double' to 'GLfloat'
+  InitShader.cpp
+  textfile.cpp
+  Generating code
+  All 38 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  GLSLExperiment.vcxproj -> E:\CS543 Computer Graphics\texture_example_code\Release\GLSLExperiment.exe

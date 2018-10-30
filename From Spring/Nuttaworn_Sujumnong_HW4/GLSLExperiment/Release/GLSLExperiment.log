@@ -1,0 +1,10 @@
+﻿  example1.cpp
+example1.cpp(384): warning C4305: 'initializing': truncation from 'double' to 'GLfloat'
+  Generating code
+c:\users\nsujumnong\desktop\cs543 computer graphics\nuttaworn_sujumnong_hw4\glslexperiment\example1.cpp(117): warning C4700: uninitialized local variable 'texGrass' used
+c:\users\nsujumnong\desktop\cs543 computer graphics\nuttaworn_sujumnong_hw4\glslexperiment\example1.cpp(126): warning C4700: uninitialized local variable 'texStones' used
+  37 of 246 functions (15.0%) were compiled, the rest were copied from previous compilation.
+    3 functions were new in current compilation
+    14 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  GLSLExperiment.vcxproj -> C:\Users\nsujumnong\Desktop\CS543 Computer Graphics\Nuttaworn_Sujumnong_HW4\Release\GLSLExperiment.exe

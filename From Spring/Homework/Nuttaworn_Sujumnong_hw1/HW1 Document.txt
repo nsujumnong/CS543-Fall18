@@ -1,0 +1,45 @@
+The folder HW1 contains the first assignment for CS543.
+
+Nuttaworn Sujumnong
+
+To run the program, simply open the GLSLExperiment.sln file. The main c++ code is in the file example1.cpp.
+
+The file example1.cpp includes the code for Sierpinski Gasket, Polyline drawing, and Koch Snowflake.
+
+The Sierpinski Gasket code is based on the example code from Interactive Computer Graphics 6nd edition
+
+Code: 
+	-triangle(): draw a final triangle for the Sierpinski Gasket
+	-divide_triangle(): drawn triangle in each iteration with half the size of the previous triangle
+                            while the iteration is larger than 0. If it reaches the last iteration, draw the
+                            last triangle by calling triangle() function.
+        -sierpinski(): specify the coordinates of the first triangle, then call divide_triangle() to draw the 
+                       smaller triangle inside of it.
+
+Koch Snowflake: The code is based on Computer Graphics using OpenGL 2nd edition
+
+Code: 	-drawKoch(): the code takes direction, length, and number of iteration as the arguments. The function 
+                     draws one side of the Koch snowflake at a time. It determines the next point based on the 
+                     previous point. The function calls itself in order to turn left 60 degree, turn right 120 degree,
+                     and then left 60 degree to make the Koch curve happens. Once it reaches the final iterantion,
+                     it simply draw a straight line.
+	-initKoch(): This function contains the calculated numbers of points will be drawn and initialize the index
+                     of the points. Then, it calls drawKoch() three times in order to create a snowflake.
+
+Polyline file drawing: 
+
+Code:
+	-drawPolylineFile(): This code takes the .dat file name as an argument. It reades the data file and determine
+                             each section of the file: Ignore the comment above the line with '*', read the polyline
+                             extent, read the number of total polylines will be drawn, then loop the lines that contain
+                             the number of points in each line and all points for the line. The final section of the code
+                             simply creates the 4x4 tile of each polyline drawing with appropriate resize. 
+
+The keyboard commands are the following:
+	'k' : draw the Koch snowflake with 3 iterations
+	'i' : increase the iteration and draw the Koch snowflake
+	'r' : decrease the iteration and draw the Koch snowflake. DO NOT go lower than 1 iteration or the program may crash
+	'u' : draw the polyline of the file usa.dat
+	'd' : draw the polyline of the file dragon.dat
+	'v' : draw the polyline of the file vinci.dat
+	's' : draw the Sierpinski Gasket. The drawing contains only 5 iteration of the triangles.

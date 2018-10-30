@@ -1,0 +1,3 @@
+﻿  example1.cpp
+example1.cpp(349): warning C4305: 'argument': truncation from 'double' to 'const GLfloat'
+  GLSLExperiment.vcxproj -> E:\CS543 Computer Graphics\Homework4_Try\Debug\GLSLExperiment.exe

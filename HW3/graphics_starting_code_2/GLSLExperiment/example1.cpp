@@ -860,125 +860,13 @@ void displayScene()
 	GLuint viewMatrix = glGetUniformLocationARB(program, "projection_matrix");
 	glUniformMatrix4fv(viewMatrix, 1, GL_FALSE, viewMatrixf);
 
+	// keep track of pushing and popping
 	pushCount = 0;
 	popCount = 0;
 
+	// draw ground first
 	drawGround();
-	// matrix stack push and pop
-	/*mvstack.push(modelMat);
-	porsche();
-	modelMat = mvstack.pop();*/
-
-	// playing around with making a tree
-	// start from translate the base to +5 x-axis
-	/*mvstack.push(modelMat);
-	pushCount++;
-	modelMat = modelMat * Translate(5, 0, 0);*/
-
-	// make a tree (stack 5 cylinders and spheres at the end)
-	// This is equivalent to F
-	//mvstack.push(modelMat);
-	//pushCount++;
-	//cylinder();
-	//mvstack.push(modelMat);
-	//pushCount++;
-	//sphere();
-	//modelMat = mvstack.pop(); // push 2, pop 1
-	//popCount++;
-	//for (int k = 0; k < 4; k++) {
-	//	// push 8, pop 4
-	//	mvstack.push(modelMat);
-	//	pushCount++;
-	//	modelMat = modelMat * Translate(0,2,0);
-	//	cylinder();
-	//	mvstack.push(modelMat);
-	//	pushCount++;
-	//	sphere();
-	//	modelMat = mvstack.pop();
-	//	popCount++;
-	//}
-
-	//// make one branch
-	//// 1st len of branch
-	//mvstack.push(modelMat);	// [
-	//pushCount++;
-	//// +
-	//modelMat = modelMat * Translate(0, 1,0)*RotateX(22.5);
-	//// F
-	//mvstack.push(modelMat);
-	//pushCount++;
-	//modelMat = modelMat * Translate(0, 1, 0);
-	//cylinder();
-	//mvstack.push(modelMat);
-	//pushCount++;
-	//sphere();
-	//modelMat = mvstack.pop();
-	//popCount++;
-	//// try adding long branch to the branch
-	//for (int k = 0; k < 4; k++) {
-	//	mvstack.push(modelMat);
-	//	pushCount++;
-	//	modelMat = modelMat * Translate(0,2,0);
-	//	cylinder();
-	//	mvstack.push(modelMat);
-	//	pushCount++;
-	//	sphere();
-	//	modelMat = mvstack.pop();
-	//	popCount++;
-	//}
-	//
-	////cout << "pushCount: " << pushCount << '\n';
-	////cout << "popCount: " << popCount << '\n';
-	//// 2nd len of branch
-	///*mvstack.push(modelMat);
-	//modelMat = modelMat * Translate(0,1,0)*RotateX(22.5);
-	//mvstack.push(modelMat);
-	//modelMat = modelMat * Translate(0, 1, 0);
-	//cylinder();
-	//mvstack.push(modelMat);
-	//sphere();
-	//modelMat = mvstack.pop();*/
-	//// pop back to top
-	//modelMat = mvstack.pop();
-	//popCount++;
-	//modelMat = mvstack.pop(); // enough popping for 1 len brach to go back to the top of tree
-	//popCount++;
-	//modelMat = mvstack.pop();
-	//popCount++;
-	//modelMat = mvstack.pop(); // enough popping for 2 len branch to go back to the top of tree
-	//popCount++;
-	//modelMat = mvstack.pop();
-	//popCount++;
-	//modelMat = mvstack.pop(); // if replace 2nd len branch with long branch, this is enough popping 
-	//popCount++;
-
-	//// continue from the top of the tree
-	//mvstack.push(modelMat);
-	//pushCount++;
-	//modelMat = modelMat * Translate(0,2,0);
-	//cylinder();
-	//mvstack.push(modelMat);
-	//pushCount++;
-	//sphere();
-	//modelMat = mvstack.pop();
-	//popCount++;
-
-	//// pop matrices until to goes back to the very first stack
-	//modelMat = mvstack.pop();
-	//popCount++;
-	//modelMat = mvstack.pop();
-	//popCount++;
-	//modelMat = mvstack.pop();
-	//popCount++;
-	//modelMat = mvstack.pop();
-	//popCount++;
-	//modelMat = mvstack.pop();
-	//popCount++;
-	//modelMat = mvstack.pop();
-	//popCount++;
-	//modelMat = mvstack.pop(); // pop 7 times to go back to the bottom of the stack
-	//popCount++;
-
+	
 	// test the grammar reading algorithm
 	if (tree1Count != 0)
 	{
