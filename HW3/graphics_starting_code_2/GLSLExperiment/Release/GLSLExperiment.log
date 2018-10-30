@@ -28,9 +28,9 @@ c:\users\nuttaworn\desktop\cs543 fall18\hw3\graphics_starting_code_2\glslexperim
 c:\users\nuttaworn\desktop\cs543 fall18\hw3\graphics_starting_code_2\glslexperiment\example1.cpp(1137): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
 c:\users\nuttaworn\desktop\cs543 fall18\hw3\graphics_starting_code_2\glslexperiment\example1.cpp(1138): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
 c:\users\nuttaworn\desktop\cs543 fall18\hw3\graphics_starting_code_2\glslexperiment\example1.cpp(1139): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  InitShader.cpp
+  textfile.cpp
   Generating code
-  3 of 343 functions ( 0.9%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+  All 343 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
   GLSLExperiment.vcxproj -> C:\Users\Nuttaworn\Desktop\CS543 Fall18\HW3\graphics_starting_code_2\Release\GLSLExperiment.exe
